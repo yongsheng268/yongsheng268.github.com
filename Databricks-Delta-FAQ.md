@@ -65,3 +65,12 @@ as i am one of the few people who saw how Delta came along from conceptual idea 
 Read Eric's talk for more detailed engineering insights
 https://www.slideshare.net/databricks/transactional-writes-to-cloud-storage-with-eric-liang
 
+
+
+#### Delta for Change Data Capture (CDC)
+
+https://www.slideshare.net/databricks/simplifying-change-data-capture-using-databricks-delta
+
+MySQL replication (binlog) + Structured Streaming + Delta:  https://docs.databricks.com/delta/optimizations/mysql-delta.html
+
+MySQL + Debesizum + Spark Structured Streaming + Delta: https://debezium.io/blog/2018/07/19/advantages-of-log-based-change-data-capture/
