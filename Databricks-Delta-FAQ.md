@@ -52,10 +52,16 @@ If it is INSERT, it will not.   you can see that from the table listed in the do
 
 #### One side unrelated question – in my researching of this question, I ran across DBIO.  (https://docs.databricks.com/_static/notebooks/dbio-transactional-commit.html).   Could you explain to me more about what DBIO is, and how we can use it?  I found it mentioned in the docs (https://docs.microsoft.com/en-us/azure/databricks/spark/latest/spark-sql/dbio-commit) but it doesn’t provide much information there.
 
-re: DBIO, there are two related things.  DBIO caching is an optimization feature that we provide as part of the product.   the best way to think about it is to make analogy to the instruction prefetching in a computer system architecture design world.   smiliarly, data/partitions are prefetched and cached to speedup remote file transfer
+re: DBIO, there are two related things.  DBIO caching is an optimization feature that we provide as part of the product.   the best way to think about it is to make analogy to the instruction prefetching in a computer system architecture design world.   smiliarly, data/partitions are prefetched and cached to speedup remote file transfer.  See Databricks doc on Delta Caching:
+https://docs.databricks.com/delta/optimizations/delta-cache.html
+
 
 DBIO transactional commit (your questions) concerns with write performance and transactionality.   In a nutshell, it is optimization technique that improve write commit performance (to cloud storage like BLOB or S3) by allowing each task to write out its data more aggressively earlier than previous version (<2.1) spark.   At the same time, it keeps track of transactional commit status making Delta transactional ACID compliant.    VACUUM is designed a big part of it to solve the problem of those early writes but later on uncommitted (similar to rolled-back concept in DBMS work)
 
 last but not least, it does appear that you guys are much more mature in adopting the Delta technology.    i believe we talked about setting up Delta workshop.   you will like it.    i would highly recommend the formal training class DB200 Delta 
 https://academy.databricks.com/instructor-led-training/DB200
 as i am one of the few people who saw how Delta came along from conceptual idea to full-fledging product,  i can assure you that you will find this fascinating!     just a bit context --- it was at the same time Delta was being developed,  three of us worked with a customer and developed our own version of Delta (only part of the functionality).   it took us 6 months.    so this is really a remarkable technology so easy and simple to use :-) 
+
+Read Eric's talk for more detailed engineering insights
+https://www.slideshare.net/databricks/transactional-writes-to-cloud-storage-with-eric-liang
+
