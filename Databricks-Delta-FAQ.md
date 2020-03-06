@@ -76,3 +76,5 @@ MySQL replication (binlog) + Structured Streaming + Delta:  https://docs.databri
 MySQL + Debesizum + Spark Structured Streaming + Delta: https://debezium.io/blog/2018/07/19/advantages-of-log-based-change-data-capture/
 
 Databricks MERGE INTO :    https://docs.databricks.com/_static/notebooks/merge-in-cdc.html
+
+[Related] Azure Data Factory's 4 Ways to Incrementally Load Data: https://docs.microsoft.com/en-us/azure/data-factory/tutorial-incremental-copy-overview
