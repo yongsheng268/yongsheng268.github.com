@@ -66,6 +66,8 @@ Read Eric's talk for more detailed engineering insights
 https://www.slideshare.net/databricks/transactional-writes-to-cloud-storage-with-eric-liang
 
 
+#### Efficient Upsert with Delta
+https://databricks.com/blog/2019/03/19/efficient-upserts-into-data-lakes-databricks-delta.html
 
 #### Delta for Change Data Capture (CDC)
 
