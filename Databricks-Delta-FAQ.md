@@ -74,3 +74,5 @@ https://www.slideshare.net/databricks/simplifying-change-data-capture-using-data
 MySQL replication (binlog) + Structured Streaming + Delta:  https://docs.databricks.com/delta/optimizations/mysql-delta.html
 
 MySQL + Debesizum + Spark Structured Streaming + Delta: https://debezium.io/blog/2018/07/19/advantages-of-log-based-change-data-capture/
+
+Databricks MERGE INTO :    https://docs.databricks.com/_static/notebooks/merge-in-cdc.html
