@@ -153,24 +153,17 @@
         let response = await fetch(url, {  
           method: 'POST',
           headers: {
-                 //'Access-Control-Allow-Origin': '*',
-                //"Access-Control-Allow-Origin": "http://localhost:8080",
-                //"Access-Control-Allow-Origin": "http://localhost:8080",
-                //"Access-Control-Allow-Credentials": "true",
-                //"Access-Control-Allow-Methods": "GET,POST,HEAD,OPTIONS,PUT",
-                //"Access-Control-Allow-Methods": "*",
-                //"Access-Control-Allow-Headers": "Content-Type,X-Requested-With,Accept,Authorization,Origin,Access-Control-Request-Method,Access-Control-Request-Headers",
-                //"Access-Control-Allow-Headers": "*",
-                //"Access-Control-Expose-Headers": "Authorization,responseType, observe",
-                //"Content-Type": "application/json; format=pandas-records",
-                //"Authorization": "Bearer dapiddde849e3408ee1bdc5e4fbc596eaeeb",
-                //"Accept": "application/json",
-                
+                "Access-Control-Allow-Origin": "https://yongsheng268.github.io",
+                "Access-Control-Allow-Credentials": "true",
+                "Access-Control-Allow-Methods": "GET,POST,HEAD,OPTIONS,PUT",
+                "Access-Control-Allow-Headers": "Content-Type,X-Requested-With,Accept,Authorization,Origin,Access-Control-Request-Method,Access-Control-Request-Headers",
+                "Access-Control-Expose-Headers": "Authorization,responseType, observe",
+                "Content-Type": "application/json; format=pandas-records",
+                "Authorization": "Bearer dapiddde849e3408ee1bdc5e4fbc596eaeeb",
+                "Accept": "application/json",
           },          
           //body: new FormData(formElem)
           body: JSON.stringify(data),
-
-// curl -i -X OPTIONS -H "Origin: http://127.0.0.1:8080" -H 'Access-Control-Request-Method: POST'  -H 'Access-Control-Request-Headers: Content-Type, Authorization'  "https://demo.cloud.databricks.com/model/sklearn-model-register-back/Production/invocations"
         });
 
         if (!response.ok) {
