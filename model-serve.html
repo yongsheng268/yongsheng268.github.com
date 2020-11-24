@@ -1,0 +1,196 @@
+<html>
+<head><title>Model Serving</title></head>
+<body>
+<!--     <form action="myurl" method="POST" name="myForm">
+        <p><label for="first_name">First Name:</label>
+        <input type="text" name="first_name" id="fname"></p>
+
+        <p><label for="last_name">Last Name:</label>
+        <input type="text" name="last_name" id="lname"></p>
+
+        <input value="Submit" type="submit" onclick="submitform()">
+    </form> -->
+
+<!--     <form>
+	  <input type="text" name="firstName"/>
+	  <select name="birthYear">
+	  ...
+	  </select>
+	  <button>Submit</button>
+	</form> -->
+
+
+    <center> <h1> Serve ML/AI Model with Databricks MLflow </h1></center>
+
+    <p></p>
+    <h3> MLflow References </h3>
+    1. <a href="https://databricks.com/blog/2020/06/25/announcing-mlflow-model-serving-on-databricks.html" target="_blank"> 
+    MLflow Model Serving Blog (Jun, 2020) </a> <br>
+    2. <a href="https://docs.databricks.com/applications/mlflow/model-serving.html" target="_blank">
+    MLflow Model Serving Official Doc </a> <br>
+    3. <a href="https://docs.databricks.com/applications/mlflow/index.html" target="_blank">MLflow Official Doc </a> 
+
+    <p></p>
+    <hr>
+
+    <h3>Predict Boston House Price with Fitted Regression Model</h3>
+    
+    <a href="https://www.kaggle.com/prasadperera/the-boston-housing-dataset" target="_blank">Dataset (Boston House Price)</a>
+    <br><p></p>
+    <br><p></p>
+
+    <form id="formElem">
+        
+        <p> <label for="CRIM">CRIM:</label> <input type="text" name="CRIM" value=0.09178>
+         <label for="ZN">ZN:</label> <input type="text" name="ZN" value=0>
+         <label for="INDUS">INDUS:</label> <input type="text" name="INDUS" value=4.05>
+         <label for="CHAS">CHAS:</label> <input type="text" name="CHAS" value=0>
+         <p><label for="NOX">NOX:</label> <input type="text" name="NOX" value=0.51>
+
+         <label for="RM">RM:</label> <input type="text" name="RM" value=6.416>
+         <label for="AGE">AGE:</label> <input type="text" name="AGE" value=84.1>
+         <label for="DIS">DIS:</label> <input type="text" name="DIS" value=2.6463>
+        <p> <label for="RAD">RAD:</label> <input type="text" name="RAD" value=5>
+         <label for="TAX">TAX:</label> <input type="text" name="TAX" value=296>
+
+         <label for="PTRATIO">PTRATIO:</label> <input type="text" name="PTRATIO" value=16.6>
+         <label for="B">B:</label> <input type="text" name="B" value=395.5>
+        <p> <label for="LSTAT">LSTAT:</label> <input type="text" name="LSTAT" value="9.04">            
+
+        &emsp;&emsp;
+
+        <input type="submit" value="Predict score">
+        <br>
+        <br>
+        <p><label for="">My Score: </label>
+           <br> <textarea name=“textarea” id="resScore" rows=“10" cols=“50”>Predicted result</textarea>
+
+    </form>
+
+
+
+
+<!--     <div id="decoded"></div>
+    <button id="encode">Predict</button>
+    <div id="encoded"></div> -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+
+        //document.getElementById("resScore").value = "this is a test"
+
+
+    // formElem.onsubmit = async (e) => {
+    //   e.preventDefault();
+    //   var form = document.querySelector("#formElem");
+    //  // var form = document.forms[0];
+
+    //     data = {
+    //       firstname : form.querySelector('input[name="firstname"]').value,
+    //       lastname : form.querySelector('input[name="lastname"]').value,
+    //       age : 5
+    //     }
+
+    //     let response = await fetch('http://localhost:8482/decode', {
+    //             method: 'POST', // or 'PUT'
+    //             headers: {
+    //                 'Content-Type': 'application/json',
+    //             },
+    //             body: JSON.stringify(data),
+    //     })
+
+    //     let text = await response.text(); // read response body as text
+    //     document.querySelector("#decoded").innerHTML = text;
+    // };
+
+
+// curl \
+//   -u token:dapi21a9492bb07c87dead34cc58ab9eb11d \
+//   -H "Content-Type: application/json; format=pandas-records" \
+//   -d@/dbfs/tmp/my-mlflow-lm.json \
+// https://demo.cloud.databricks.com/model/sklearn-model-register-back/Production/invocations
+
+
+
+    formElem.onsubmit = async (e) => {
+        e.preventDefault();
+
+        // data = {
+          // firstname : form.querySelector('input[name="firstname"]').value,
+          // lastname : form.querySelector('input[name="lastname"]').value,
+        //   age : 5
+        // }
+        //data = {"0":0.09178,"1":0.0,"2":4.05,"3":0.0,"4":0.51,"5":6.416,"6":84.1,"7":2.6463,"8":5.0,"9":296.0,"10":16.6,"11":395.5,"12":9.04}
+        //data = '[[0.09178,0,4.05,0,0.51,6.416,84.1,2.6463,5,296,16.6,395.5,9.04]]'
+        //data = {"0":0.09178,"1":0.0,"2":4.05,"3":0.0,"4":0.51,"5":6.416,"6":84.1,"7":2.6463,"8":5.0,"9":296.0,"10":16.6,"11":395.5,"12":9.04}
+
+
+        //working in Databricks Browser
+        //data = {"0":[0.09178],"1":[0.0],"2":[4.05],"3":[0.0],"4":[0.51],"5":[6.416],"6":[84.1],"7":[2.6463],"8":[5.0],"9":[296.0],"10":[16.6],"11":[395.5],"12":[9.04]}
+        //body:  '[{"0":0.09178,"1":0.0,"2":4.05,"3":0.0,"4":0.51,"5":6.416,"6":84.1,"7":2.6463,"8":5.0,"9":296.0,"10":16.6,"11":395.5,"12":9.04}]',
+        
+        data =      [{ "0": parseFloat($('input[name="CRIM"]')[0].value), 
+                      "1": parseFloat($('input[name="ZN"]')[0].value), 
+                      "2": parseFloat($('input[name="INDUS"]')[0].value),        
+                      "3": parseFloat($('input[name="CHAS"]')[0].value), 
+                      "4": parseFloat($('input[name="NOX"]')[0].value), 
+
+                      "5": parseFloat($('input[name="RM"]')[0].value), 
+                      "6": parseFloat($('input[name="AGE"]')[0].value),        
+                      "7": parseFloat($('input[name="DIS"]')[0].value), 
+                      "8": parseFloat($('input[name="RAD"]')[0].value), 
+                      "9": parseFloat($('input[name="TAX"]')[0].value), 
+
+                      "10": parseFloat($('input[name="PTRATIO"]')[0].value), 
+                      "11": parseFloat($('input[name="B"]')[0].value), 
+                      "12": parseFloat($('input[name="LSTAT"]')[0].value), 
+                    }]
+
+
+        const proxyurl = "https://dry-retreat-40558.herokuapp.com/";
+        const url = 'https://demo.cloud.databricks.com/model/sklearn-model-register-back/Production/invocations'; // site that doesn’t send Access-Control-*
+
+        //let response = await fetch(proxyurl+url, {
+        let response = await fetch(url, {  
+          method: 'POST',
+          headers: {
+                 //'Access-Control-Allow-Origin': '*',
+                //"Access-Control-Allow-Origin": "http://localhost:8080",
+                //"Access-Control-Allow-Origin": "http://localhost:8080",
+                //"Access-Control-Allow-Credentials": "true",
+                //"Access-Control-Allow-Methods": "GET,POST,HEAD,OPTIONS,PUT",
+                //"Access-Control-Allow-Methods": "*",
+                //"Access-Control-Allow-Headers": "Content-Type,X-Requested-With,Accept,Authorization,Origin,Access-Control-Request-Method,Access-Control-Request-Headers",
+                //"Access-Control-Allow-Headers": "*",
+                //"Access-Control-Expose-Headers": "Authorization,responseType, observe",
+                //"Content-Type": "application/json; format=pandas-records",
+                //"Authorization": "Bearer dapiddde849e3408ee1bdc5e4fbc596eaeeb",
+                //"Accept": "application/json",
+                
+          },          
+          //body: new FormData(formElem)
+          body: JSON.stringify(data),
+
+// curl -i -X OPTIONS -H "Origin: http://127.0.0.1:8080" -H 'Access-Control-Request-Method: POST'  -H 'Access-Control-Request-Headers: Content-Type, Authorization'  "https://demo.cloud.databricks.com/model/sklearn-model-register-back/Production/invocations"
+        });
+
+        if (!response.ok) {
+            const errorMessage = await response.text();
+            throw new Error(errorMessage);
+        }
+
+        let result = await response.json();
+
+        //alert(result[0]);
+        //alert(result.value)
+
+        console.log(result)
+
+        document.getElementById("resScore").value = result[0]
+
+      };
+
+</script>
+
+
+</body>
+</html>
